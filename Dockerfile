@@ -1,12 +1,5 @@
 # Base Image
-FROM debian:12.2
-
-ENV ZM_DB_HOST=mariadb
-ENV ZM_DB_NAME=zm
-ENV ZM_DB_USER=zmuser
-ENV ZM_DB_PASS=zmpass
-# this is just a default
-ENV TZ=America/New_York
+FROM debian:12.12
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update \
@@ -71,6 +64,12 @@ RUN install -m 0644 -o root -g root /tmp/zm-site.conf /etc/apache2/sites-availab
 
 VOLUME /var/cache/zoneminder
 VOLUME /var/log/zm
+
+# Copy default files for ZMES
+COPY es_rules.json /etc/zm/
+COPY secrets.ini /etc/zm/
+COPY zmeventnotification.ini /etc/zm/
+COPY objectconfig.ini /etc/zm/
 
 # Copy entrypoint make it as executable and run it
 COPY entrypoint.sh /opt/

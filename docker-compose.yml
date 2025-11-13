@@ -1,37 +1,56 @@
-version: '2'
+version: "3.9"
 
+
+# docker managed persistent volumes
 volumes:
-  data:
+  video:
+  zmlogs:
+  weblogs:
   db:
 
 services:
+
+  # MariaDB container with healthcheck
   mariadb:
-    image: mariadb:11.1-jammy
-    restart: always
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW --default-time-zone=America/New_York
-    volumes:
-      - ./db:/var/lib/mysql
+    image: mariadb:latest
+    container_name: mariadb
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW --default-time-zone=${TZ}
     environment:
-      - MYSQL_PASSWORD=zmpass
-      - MYSQL_DATABASE=zm
-      - MYSQL_USER=zmuser
-      - MARIADB_ROOT_PASSWORD=w8t67u23789t
+      MYSQL_PASSWORD: ${ZM_DB_PASS}
+      MYSQL_DATABASE: ${ZM_DB_NAME}
+      MYSQL_USER: ${ZM_DB_USER}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASS}
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      start_period: 1m
+      start_interval: 10s
+      interval: 1m
+      timeout: 5s
+      retries: 3
+    volumes:
+      - db:/var/lib/mysql
+
+  # Zoneminder container
   zm:
-    image: ghcr.io/jantman/docker-zoneminder:latest
-    restart: always
-    shm_size: 1G
-    ports:
-      - 8080:80
-    links:
+    image: kevinruffus/docker-zoneminder:latest
+    container_name: zm
+    restart: unless-stopped
+    shm_size: ${SHM_SIZE}
+    depends_on:
       - mariadb
+    environment:
+      ZM_DB_PASS: ${ZM_DB_PASS}
+      ZM_DB_NAME: ${ZM_DB_NAME}
+      ZM_DB_USER: ${ZM_DB_USER}
+      ZM_DB_HOST: ${ZM_DB_HOST}
+      TZ: ${TZ}
+    ports:
+      - ${EXT_HTTP}:80
     tmpfs:
       - /run
-      - /tmp
+      - /tmp   
     volumes:
-      - ./cache:/var/cache/zoneminder
-      - ./zm-log:/var/log/zm
-      - ./apache2-log:/var/log/apache2
-      - ./es_rules.json:/etc/zm/es_rules.json
-      - ./secrets.ini:/etc/zm/secrets.ini
-      - ./zmeventnotification.ini:/etc/zm/zmeventnotification.ini
-      - ./objectconfig.ini:/etc/zm/objectconfig.ini
+      - video:/var/cache/zoneminder
+      - zmlogs:/var/log/zm
+      - weblogs:/var/log/apache2  
