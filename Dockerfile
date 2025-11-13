@@ -1,5 +1,5 @@
 # Base Image
-FROM debian:12.12
+FROM debian:13-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update \
