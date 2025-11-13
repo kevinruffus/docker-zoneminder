@@ -7,6 +7,7 @@ volumes:
   zmlogs:
   weblogs:
   db:
+  zmconfig:
 
 services:
 
@@ -74,3 +75,4 @@ services:
       - video:/var/cache/zoneminder
       - zmlogs:/var/log/zm
       - weblogs:/var/log/apache2
+      - zmconfig:/etc/zm

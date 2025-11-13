@@ -30,6 +30,7 @@ RUN apt update \
          python3-opencv \
          s6 \
          wget \
+         nano \
          zoneminder \
     && /usr/bin/pip install --break-system-packages pyzm \
     && apt-get clean \
@@ -66,10 +67,10 @@ VOLUME /var/cache/zoneminder
 VOLUME /var/log/zm
 
 # Copy default files for ZMES
-COPY es_rules.json /etc/zm/
-COPY secrets.ini /etc/zm/
-COPY zmeventnotification.ini /etc/zm/
-COPY objectconfig.ini /etc/zm/
+COPY es_rules.json /tmp/
+COPY secrets.ini /tmp/
+COPY zmeventnotification.ini /tmp/
+COPY objectconfig.ini /tmp/
 
 # Copy entrypoint make it as executable and run it
 COPY entrypoint.sh /opt/

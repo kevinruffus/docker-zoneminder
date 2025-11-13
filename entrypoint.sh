@@ -21,6 +21,24 @@ if [ ! -d /var/cache/zoneminder/events ]; then
     chmod -R 770 /var/cache/zoneminder
 fi
 
+# check if config files for event server are in place
+if [ ! -e /etc/zm/es_rules.json]; then
+    cp /tmp/es_rules.json /etc/zm/es_rules.json
+fi
+
+if [ ! -e /etc/zm/objectconfig.ini]; then
+    cp /tmp/objectconfig.ini /etc/zm/objectconfig.ini
+fi
+
+if [ ! -e /etc/zm/secrets.ini]; then
+    cp /tmp/secrets.ini /etc/zm/secrets.ini
+fi
+
+if [ ! -e /etc/zm/zmeventnotification.ini]; then
+    cp /tmp/zmeventnotification.ini /etc/zm/zmeventnotification.ini
+fi
+
+
 echo "chown and chmod /etc/zm and /var/log/zm"
 chown -R root:www-data /etc/zm
 chown -R www-data:www-data /var/log/zm
