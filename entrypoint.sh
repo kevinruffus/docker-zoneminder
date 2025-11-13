@@ -22,19 +22,19 @@ if [ ! -d /var/cache/zoneminder/events ]; then
 fi
 
 # check if config files for event server are in place
-if [ ! -e /etc/zm/es_rules.json]; then
+if [ ! -e /etc/zm/es_rules.json ]; then
     cp /tmp/es_rules.json /etc/zm/es_rules.json
 fi
 
-if [ ! -e /etc/zm/objectconfig.ini]; then
+if [ ! -e /etc/zm/objectconfig.ini ]; then
     cp /tmp/objectconfig.ini /etc/zm/objectconfig.ini
 fi
 
-if [ ! -e /etc/zm/secrets.ini]; then
+if [ ! -e /etc/zm/secrets.ini ]; then
     cp /tmp/secrets.ini /etc/zm/secrets.ini
 fi
 
-if [ ! -e /etc/zm/zmeventnotification.ini]; then
+if [ ! -e /etc/zm/zmeventnotification.ini ]; then
     cp /tmp/zmeventnotification.ini /etc/zm/zmeventnotification.ini
 fi
 
