@@ -31,17 +31,17 @@ echo "Setting PHP timezone"
 sed -i "s|;date\.timezone =.*|date.timezone = ${TZ}|" /etc/php/8.4/apache2/php.ini
 
 # Set basic php security
-echo "Setting basic php security"
-sed -i "s/disable_functions =/disable_functions = system,passthru,pcntl_alarm/" /etc/php/8.4/apache2/php.ini
-sed -i "s/;html_errors = On/html_errors = Off/" /etc/php/8.4/apache2/php.ini
-sed -i "/html_errors = Off/a register_globals = Off" /etc/php/8.4/apache2/php.ini
+#echo "Setting basic php security"
+#sed -i "s/disable_functions =/disable_functions = system,passthru,pcntl_alarm/" /etc/php/8.4/apache2/php.ini
+#sed -i "s/;html_errors = On/html_errors = Off/" /etc/php/8.4/apache2/php.ini
+#sed -i "/html_errors = Off/a register_globals = Off" /etc/php/8.4/apache2/php.ini
 
 # Configures security options in security.conf
-echo "Configuring Apache security settings"
-sed -i "s/ServerTokens OS/ServerTokens Prod/" /etc/apache2/conf-available/security.conf
-sed -i "s/ServerSignature On/ServerSignature Off/" /etc/apache2/conf-available/security.conf
-sed -i 's/#Header set X-Content-Type-Options: "nosniff"/Header set X-Content-Type-Options: "nosniff"/' /etc/apache2/conf-available/security.conf
-sed -i '/Header set X-Content-Type-Options: "nosniff"/a Header always unset X-Powered-By' /etc/apache2/conf-available/security.conf
+#echo "Configuring Apache security settings"
+#sed -i "s/ServerTokens OS/ServerTokens Prod/" /etc/apache2/conf-available/security.conf
+#sed -i "s/ServerSignature On/ServerSignature Off/" /etc/apache2/conf-available/security.conf
+#sed -i 's/#Header set X-Content-Type-Options: "nosniff"/Header set X-Content-Type-Options: "nosniff"/' /etc/apache2/conf-available/security.conf
+#sed -i '/Header set X-Content-Type-Options: "nosniff"/a Header always unset X-Powered-By' /etc/apache2/conf-available/security.conf
 
 echo "Setting up directories in /run tmpfs"
 install -m 0755 -o root -g root -d /run/apache2
