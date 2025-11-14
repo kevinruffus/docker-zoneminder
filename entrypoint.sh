@@ -30,6 +30,12 @@ chmod -R 770 /etc/zm /var/log/zm
 echo "Setting PHP timezone"
 sed -i "s|;date\.timezone =.*|date.timezone = ${TZ}|" /etc/php/8.4/apache2/php.ini
 
+# Configures security options in security.conf
+echo "Configuring Apache security settings"
+sed -i "s/ServerTokens OS/ServerTokens Prod/" /etc/apache2/conf-available/security.conf
+sed -i "s/ServerSignature On/ServerSignature Off/" /etc/apache2/conf-available/security.conf
+sed -i 's/#Header set X-Content-Type-Options: "nosniff"/Header set X-Content-Type-Options: "nosniff"/' /etc/apache2/conf-available/security.conf
+
 echo "Setting up directories in /run tmpfs"
 install -m 0755 -o root -g root -d /run/apache2
 install -m 1777 -o root -g root -d /run/lock
