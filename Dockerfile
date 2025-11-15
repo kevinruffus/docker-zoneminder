@@ -65,12 +65,14 @@ RUN install -m 0644 -o root -g root /tmp/zm-site.conf /etc/apache2/sites-availab
 
 VOLUME /var/cache/zoneminder
 VOLUME /var/log/zm
+VOLUME /var/log/apache2
+VOLUME /etc/zm
 
 # Copy default files for ZMES
-COPY es_rules.json /etc/zm/
-COPY secrets.ini /etc/zm/
-COPY zmeventnotification.ini /etc/zm/
-COPY objectconfig.ini /etc/zm/
+COPY es_rules_EXAMPLE.json /etc/zm/
+COPY secrets_EXAMPLE.ini /etc/zm/
+COPY zmeventnotification_EXAMPLE.ini /etc/zm/
+COPY objectconfig_EXAMPLE.ini /etc/zm/
 
 # Copy entrypoint make it as executable and run it
 COPY entrypoint.sh /opt/

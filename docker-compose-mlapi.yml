@@ -49,8 +49,8 @@ services:
     volumes:
       - data:/var/lib/zmeventnotification
       - video:/var/cache/zoneminder
-      - ./mlapiconfig.ini:/etc/mlapiconfig.ini
-      - ./secrets.ini:/etc/secrets.ini
+      - ./mlapiconfig.EXAMPLE.ini:/etc/mlapiconfig.ini
+      - ./secrets.EXAMPLE.ini:/etc/secrets.ini
 
 # Zoneminder container
   zm:
@@ -66,11 +66,13 @@ services:
       ZM_DB_USER: ${ZM_DB_USER}
       ZM_DB_HOST: ${ZM_DB_HOST}
       TZ: ${TZ}
+      ENABLE_ES: ${ENABLE_ES}
     ports:
       - ${EXT_HTTP}:80
+      - ${EXT_ES}:9000
     tmpfs:
       - /run
-      - /tmp   
+      - /tmp
     volumes:
       - video:/var/cache/zoneminder
       - zmlogs:/var/log/zm

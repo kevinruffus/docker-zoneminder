@@ -36,6 +36,25 @@ sed -i "s/ServerTokens OS/ServerTokens Prod/" /etc/apache2/conf-available/securi
 sed -i "s/ServerSignature On/ServerSignature Off/" /etc/apache2/conf-available/security.conf
 sed -i 's/#Header set X-Content-Type-Options: "nosniff"/Header set X-Content-Type-Options: "nosniff"/' /etc/apache2/conf-available/security.conf
 
+# Enable event notification if requested
+if [ -e /etc/zm/es_rules_EXAMPLE.json ] && [ "$ENABLE_ES" == "true" ]; then
+    mv /etc/zm/es_rules_EXAMPLE.json /etc/zm/es_rules.json
+fi
+
+if [ -e /etc/zm/objectconfig_EXAMPLE.ini ] && [ "$ENABLE_ES" == "true" ]; then
+    mv /etc/zm/objectconfig_EXAMPLE.ini /etc/zm/objectconfig.ini
+fi
+
+if [ -e /etc/zm/secrets_EXAMPLE.ini ] && [ "$ENABLE_ES" == "true" ]; then
+    mv /etc/zm/secrets_EXAMPLE.ini /etc/zm/secrets.ini
+fi
+
+if [ -e /etc/zm/zmeventnotification_EXAMPLE.ini ] && [ "$ENABLE_ES" == "true" ]; then
+    mv /etc/zm/zmeventnotification_EXAMPLE.ini /etc/zm/zmeventnotification.ini
+fi
+
+
+
 echo "Setting up directories in /run tmpfs"
 install -m 0755 -o root -g root -d /run/apache2
 install -m 1777 -o root -g root -d /run/lock
